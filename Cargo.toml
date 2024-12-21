@@ -1,0 +1,12 @@
+[package]
+name = "cte_ir"
+version = "0.1.0"
+edition = "2024"
+respository = "https://github.com/plos-clan/cte_ir"
+categories = ["compilers"]
+keywords = ["compile-time-evaluation", "cte", "ir", "comptime"]
+description = "Compile-time evaluation IR"
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
