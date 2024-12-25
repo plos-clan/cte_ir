@@ -1,4 +1,4 @@
-use cte_ir::{builder::ValueBuilder, ir::*};
+use cte_ir::{builder::{ValueBuilder, BaseInstructionBuilder}, ir::*};
 
 pub fn main() {
     let mut program = Program::new();
@@ -8,9 +8,11 @@ pub fn main() {
     let one = value_builder.integer(1);
     let two = value_builder.integer(2);
 
-    let add = value_builder.add(one, two);
-
-    program.instructions_mut().push_back(None, add);
+    let add1 = value_builder.add(one, two);
+    let _add2 = value_builder.add(add1, one);
+    
+    let mut evaluter = program.new_evaluter();
+    evaluter.evalute();
 
     println!("{}", program);
 }

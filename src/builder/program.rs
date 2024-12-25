@@ -10,6 +10,11 @@ impl Program {
             value_id_manager: IdManager::new(),
         }
     }
+    
+    /// Get the immutable reference of the instructions.
+    pub fn instructions(&self) -> &InstructionList {
+        &self.instructions
+    }
 
     /// Get the mutable reference of the instructions.
     pub fn instructions_mut(&mut self) -> &mut InstructionList {
@@ -31,5 +36,12 @@ impl ValueBuilder for GlobalBuilder<'_> {
         let id = self.program.value_id_manager.next();
         self.program.values.insert(id, value);
         id
+    }
+}
+
+impl BaseInstructionBuilder for GlobalBuilder<'_> {
+    fn insert_instruction(&mut self, value: Value) -> Value {
+        self.program.instructions_mut().push(value);
+        value
     }
 }

@@ -1,48 +1,34 @@
-use std::{
-    collections::BTreeMap,
-    ops::{Deref, DerefMut},
-};
+use std::ops::{Deref, DerefMut};
 
-use super::{IdManager, Value};
-
-/// This type is actually an id of the instruction.
-pub type Instruction = usize;
+use super::Value;
 
 /// This type stores the actual instruction.
 pub struct InstructionList {
-    pub(crate) instructions: BTreeMap<Instruction, InstructionData>,
-    pub(crate) id_manger: IdManager<Instruction>,
+    pub(crate) instructions: Vec<Value>,
 }
 
 impl InstructionList {
     pub fn new() -> Self {
         Self {
-            instructions: BTreeMap::new(),
-            id_manger: IdManager::new(),
+            instructions: Vec::new(),
         }
-    }
-
-    fn get_id(&mut self) -> Instruction {
-        self.id_manger.next()
     }
 
     /// Add an instruction at the end of the list.
     /// If the name is `None`, the instruction will be named with the id.
-    pub fn push_back(&mut self, name: Option<String>, value: Value) -> Instruction {
-        let id = self.get_id();
-        self.instructions
-            .insert(id, InstructionData { name, value });
-        id
+    pub fn push_back(&mut self, value: Value) -> Value {
+        self.instructions.push(value);
+        value
     }
 
     /// Create an iterator of the instructions.
-    pub fn iter(&self) -> impl Iterator<Item = (&Instruction, &InstructionData)> {
+    pub fn iter(&self) -> impl Iterator<Item = &Value> {
         self.instructions.iter()
     }
 }
 
 impl Deref for InstructionList {
-    type Target = BTreeMap<Instruction, InstructionData>;
+    type Target = Vec<Value>;
 
     fn deref(&self) -> &Self::Target {
         &self.instructions
@@ -56,9 +42,9 @@ impl DerefMut for InstructionList {
 }
 
 impl InstructionList {
-    /// Get the instruction by the id of the instruction.
-    pub fn get_instruction(&self, id: Instruction) -> &InstructionData {
-        &self.instructions[&id]
+    /// Return true if the value is an instruction
+    pub fn is_instruction(&self, value: Value) -> bool {
+        self.instructions.iter().find(|x| **x == value).is_some()
     }
 }
 

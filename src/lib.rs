@@ -8,6 +8,8 @@
 
 /// the builder module
 pub mod builder;
+/// the evalution module
+pub mod evalute;
 mod dump;
 /// the core of CTE IR
 pub mod ir;

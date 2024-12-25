@@ -10,40 +10,48 @@ pub trait ValueBuilder {
     fn integer(&mut self, int: i64) -> Value {
         self.insert_value(ValueData::Int(int))
     }
+}
 
+pub trait BaseInstructionBuilder: ValueBuilder {
+    fn insert_instruction(&mut self, value: Value) -> Value;
+    
     /// Create a new add value.
     fn add(&mut self, lhs: Value, rhs: Value) -> Value {
-        self.insert_value(ValueData::BinaryOp(BinaryOpValue {
+        let value = self.insert_value(ValueData::BinaryOp(BinaryOpValue {
             lhs,
             op: BinaryOp::Add,
             rhs,
-        }))
+        }));
+        self.insert_instruction(value)
     }
 
     /// Create a new sub value.
     fn sub(&mut self, lhs: Value, rhs: Value) -> Value {
-        self.insert_value(ValueData::BinaryOp(BinaryOpValue {
+        let value = self.insert_value(ValueData::BinaryOp(BinaryOpValue {
             lhs,
             op: BinaryOp::Sub,
             rhs,
-        }))
+        }));
+        self.insert_instruction(value)
     }
 
     /// Create a new mul value.
     fn mul(&mut self, lhs: Value, rhs: Value) -> Value {
-        self.insert_value(ValueData::BinaryOp(BinaryOpValue {
+        let value = self.insert_value(ValueData::BinaryOp(BinaryOpValue {
             lhs,
             op: BinaryOp::Mul,
             rhs,
-        }))
+        }));
+        self.insert_instruction(value)
     }
 
     /// Create a new div value.
     fn div(&mut self, lhs: Value, rhs: Value) -> Value {
-        self.insert_value(ValueData::BinaryOp(BinaryOpValue {
+        let value = self.insert_value(ValueData::BinaryOp(BinaryOpValue {
             lhs,
             op: BinaryOp::Div,
             rhs,
-        }))
+        }));
+        self.insert_instruction(value)
     }
 }
